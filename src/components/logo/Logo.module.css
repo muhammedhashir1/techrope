@@ -1,0 +1,11 @@
+.logo_main {
+  grid-area: logo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.logo_image {
+  max-width: 100%;
+  cursor: pointer;
+}

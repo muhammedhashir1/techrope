@@ -1,0 +1,16 @@
+.aside_main {
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-top: 1px solid #c0caca;
+  box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.aside_main img {
+  margin-bottom: 15px;
+  height: 27px;
+  width: 27px;
+  cursor: pointer;
+}

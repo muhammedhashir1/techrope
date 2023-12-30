@@ -1,0 +1,124 @@
+.main_container {
+  margin: 0px 15px 15px 15px;
+  background-color: #fff;
+  padding: 20px;
+  border-top: 1px solid #c0caca;
+}
+
+.sort_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.leftSection {
+  display: flex;
+}
+
+.selectColumn {
+  margin-right: 20px;
+}
+
+.selectColumn label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.selectColumnContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #c0caca;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.dropDownIcon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.rightSection {
+  display: flex;
+}
+
+.button {
+  padding: 10px;
+  border-radius: 5px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.blueButton {
+  background-color: #3498db;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.whiteButton {
+  background-color: #fff;
+  color: #3498db;
+  border: 1px solid #3498db;
+}
+
+.tableContainer {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  background-color: #f0f4f4;
+}
+th,
+td {
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #c0caca;
+  font-family: "Poppins", sans-serif;
+}
+
+.actionButton {
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-family: "Poppins", sans-serif;
+}
+
+.blueButton {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.redButton {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.tdAlignRight {
+  text-align: right;
+}
+
+.Toastify__toast-container {
+  z-index: 9999;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+}
+.noItems {
+  font-weight: 500;
+  color: #3498db;
+  text-align: center;
+}
