@@ -84,7 +84,7 @@ const Table = () => {
         </div>
         <div className={styles.rightSection}>
           <button className={`${styles.button} ${styles.blueButton}`} onClick={handleShowButtonClick}>
-            <FaFilter /> Show
+            <FaFilter /> <span className={styles.btn_show}>Show</span>
           </button>
           <button className={`${styles.button} ${styles.whiteButton}`} onClick={handleClearButtonClick}>
             Clear

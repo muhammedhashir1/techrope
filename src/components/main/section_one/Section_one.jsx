@@ -9,6 +9,7 @@ import styles from "./Section_one.module.css";
 
 const SectionOne = () => {
   const [showItems, setShowItems] = useState(false);
+
   const handleClearButtonClick = () => {
     toast.error("Access Denied", {
       position: "top-right",
@@ -20,6 +21,7 @@ const SectionOne = () => {
     });
     setShowItems(false);
   };
+
   return (
     <div className={styles.main_container}>
       <div className={styles.main_section}>
@@ -32,17 +34,17 @@ const SectionOne = () => {
         </div>
         <div className={styles.rightSide}>
           <button className={styles.button} onClick={handleClearButtonClick}>
-            <FaPrint /> Print
+            <FaPrint /> <span className={styles.btn_print}>Print</span>
           </button>
           <button className={styles.button} onClick={handleClearButtonClick}>
-            <LuImport /> Export
+            <LuImport /> <span className={styles.btn_export}>Export</span>
           </button>
           <button className={styles.button} onClick={handleClearButtonClick}>
-            Send
+            <span className={styles.btn_send}>Send</span>
             <IoSendSharp />
           </button>
           <button className={styles.button} onClick={handleClearButtonClick}>
-            Create
+            <span className={styles.btn_create}>Create</span>
             <IoMdAdd />
           </button>
         </div>
