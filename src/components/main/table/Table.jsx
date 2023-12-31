@@ -99,11 +99,11 @@ const Table = () => {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>ITEM_NAME</th>
-                  <th>ITEM_CODE</th>
+                  <th>ITEM NAME</th>
+                  <th>ITEM CODE</th>
                   <th>CATEGORY NAME</th>
-                  <th>LANDING_COST</th>
-                  <th>SELLING_RATE</th>
+                  <th>LANDING COST</th>
+                  <th>SELLING RATE</th>
                   <th>STOCK</th>
                   <th>ACTIONS</th>
                 </tr>
