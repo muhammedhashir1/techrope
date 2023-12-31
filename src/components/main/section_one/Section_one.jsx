@@ -22,27 +22,29 @@ const SectionOne = () => {
   };
   return (
     <div className={styles.main_container}>
-      <div className={styles.leftSide}>
-        <div className={styles.heading}>
-          Item Master
-          <div className={styles.blueCircle}>0</div>
+      <div className={styles.main_section}>
+        <div className={styles.leftSide}>
+          <div className={styles.heading}>
+            Item Master
+            <div className={styles.blueCircle}>0</div>
+          </div>
+          <div className={styles.subhead}>Keep track of your items.</div>
         </div>
-        <div className={styles.subhead}>Keep track of your items.</div>
-      </div>
-      <div className={styles.rightSide}>
-        <div className={styles.button} onClick={handleClearButtonClick}>
-          <FaPrint /> Print
-        </div>
-        <div className={styles.button} onClick={handleClearButtonClick}>
-          <LuImport /> Export
-        </div>
-        <div className={styles.button} onClick={handleClearButtonClick}>
-          Send
-          <IoSendSharp />
-        </div>
-        <div className={styles.button} onClick={handleClearButtonClick}>
-          Create
-          <IoMdAdd />
+        <div className={styles.rightSide}>
+          <button className={styles.button} onClick={handleClearButtonClick}>
+            <FaPrint /> Print
+          </button>
+          <button className={styles.button} onClick={handleClearButtonClick}>
+            <LuImport /> Export
+          </button>
+          <button className={styles.button} onClick={handleClearButtonClick}>
+            Send
+            <IoSendSharp />
+          </button>
+          <button className={styles.button} onClick={handleClearButtonClick}>
+            Create
+            <IoMdAdd />
+          </button>
         </div>
       </div>
     </div>

@@ -2,13 +2,14 @@
   margin: 15px 15px 0px 15px;
   background-color: #fff;
   border-radius: 10px 10px 0px 0px;
-  display: flex;
-  justify-content: space-between;
+
   padding: 20px;
 }
-
+.main_section {
+  display: flex;
+  justify-content: space-between;
+}
 .leftSide {
-  flex: 1;
 }
 
 .heading {
