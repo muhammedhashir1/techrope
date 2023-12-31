@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "./Section_one.module.css";
 
-const SectionOne = () => {
+const SectionOne = ({ itemsCount }) => {
   const [showItems, setShowItems] = useState(false);
 
   const handleClearButtonClick = () => {
@@ -28,7 +28,7 @@ const SectionOne = () => {
         <div className={styles.leftSide}>
           <div className={styles.heading}>
             Item Master
-            <div className={styles.blueCircle}>0</div>
+            <div className={styles.blueCircle}>{itemsCount}</div>
           </div>
           <div className={styles.subhead}>Keep track of your items.</div>
         </div>

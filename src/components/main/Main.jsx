@@ -6,7 +6,6 @@ import Table from "./table/Table";
 const Main = () => {
   return (
     <div className={styles.main_container_Section}>
-      <SectionOne />
       <Table />
     </div>
   );

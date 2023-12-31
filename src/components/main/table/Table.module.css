@@ -3,6 +3,7 @@
   background-color: #fff;
   padding: 20px;
   border-top: 1px solid #c0caca;
+  border-radius: 0 0 10px 10px;
 }
 
 .sort_section {
@@ -100,6 +101,8 @@ td {
   border: none;
   border-bottom: 1px solid #c0caca;
   font-family: "Poppins", sans-serif;
+  font-size: 10px;
+  text-align: left;
 }
 
 .actionButton {
@@ -120,6 +123,8 @@ td {
 .redButton {
   background-color: #e74c3c;
   color: #fff;
+  border: none;
+  outline: none;
 }
 
 .tdAlignRight {
