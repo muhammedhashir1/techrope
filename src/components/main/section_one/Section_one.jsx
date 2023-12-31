@@ -25,7 +25,7 @@ const SectionOne = () => {
       <div className={styles.leftSide}>
         <div className={styles.heading}>
           Item Master
-          <div className={styles.blueCircle}>8</div>
+          <div className={styles.blueCircle}>0</div>
         </div>
         <div className={styles.subhead}>Keep track of your items.</div>
       </div>

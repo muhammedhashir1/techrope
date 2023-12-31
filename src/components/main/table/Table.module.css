@@ -53,6 +53,14 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  border: 0.5px solid #3498db;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #fff;
+  color: #3498db;
+  border: 0.5px solid #3498db;
 }
 
 .blueButton {
@@ -64,6 +72,11 @@
 .whiteButton {
   background-color: #fff;
   color: #3498db;
+  border: 1px solid #3498db;
+}
+.whiteButton:hover {
+  background-color: #3498db;
+  color: #fff;
   border: 1px solid #3498db;
 }
 
@@ -100,6 +113,8 @@ td {
 .blueButton {
   background-color: #3498db;
   color: #fff;
+  border: none;
+  outline: none;
 }
 
 .redButton {
