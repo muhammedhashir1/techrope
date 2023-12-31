@@ -112,12 +112,12 @@ const Table = () => {
                 {items.length > 0 ? (
                   items.map((item) => (
                     <tr key={item.id}>
-                      <td>{item.ITEM_NAME}</td>
-                      <td>{item.ITEM_CODE}</td>
-                      <td>{item.CATEGORY_NAME}</td>
-                      <td>{item.LANDING_COST}</td>
-                      <td>{item.SELLING_RATE}</td>
-                      <td>{item.STOCK}</td>
+                      <td>{item.item_name}</td>
+                      <td>{item.item_code}</td>
+                      <td>{item.category_name}</td>
+                      <td>{item.landing_cost}</td>
+                      <td>{item.selling_rate}</td>
+                      <td>{item.stock}</td>
                       <td>
                         <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
                         <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
