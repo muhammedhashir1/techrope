@@ -16,12 +16,18 @@ const Table = () => {
 
   const fetchItems = async () => {
     try {
-      const dbName = "tradeapptestdb";
-      const response = await fetch("https://mysaleappinventoryapi-7lfpakcp7q-el.a.run.app/api/v1/Item", {
-        headers: {
-          dbName: dbName,
-        },
-      });
+      const dbName = "mysaledb88410944444";
+      const branchId = "63870b069a2ce6762c64444b";
+      const companyId = "6358dc15fa7df86801678548";
+
+      const response = await fetch(
+        `https://mysaleappinventoryapi-7lfpakcp7q-el.a.run.app/api/v1/Item?branchId=${branchId}&companyId=${companyId}`,
+        {
+          headers: {
+            dbName: dbName,
+          },
+        }
+      );
 
       console.log("Response Status:", response.status);
 
@@ -101,7 +107,7 @@ const Table = () => {
                 <tr>
                   <th>ITEM NAME</th>
                   <th>ITEM CODE</th>
-                  <th>CATEGORY NAME</th>
+                  <th>CATEGORY ID</th>
                   <th>LANDING COST</th>
                   <th>SELLING RATE</th>
                   <th>STOCK</th>
@@ -114,10 +120,10 @@ const Table = () => {
                     <tr key={item.id}>
                       <td>{item.item_name}</td>
                       <td>{item.item_code}</td>
-                      <td>{item.category_name}</td>
-                      <td>{item.landing_cost}</td>
-                      <td>{item.selling_rate}</td>
-                      <td>{item.stock}</td>
+                      <td>{item.categoryId}</td>
+                      <td style={{ textAlign: "right" }}>{item.landing_cost}</td>
+                      <td style={{ textAlign: "right" }}>{item.taxIncAmount}</td>
+                      <td style={{ textAlign: "right" }}>{item.stock_}</td>
                       <td>
                         <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
                         <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
