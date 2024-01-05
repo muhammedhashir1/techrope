@@ -1,0 +1,77 @@
+.createQuotation_main {
+}
+.createQuotation_container {
+  margin: 15px 15px 0px 15px;
+  background-color: #fff;
+  border-radius: 10px 10px 0px 0px;
+  padding: 20px;
+}
+.main_section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.blueCircle {
+  background-color: rgb(0, 113, 188);
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.subhead {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.rightSide {
+}
+
+.quotation_no_main,
+.quotation_date_main {
+  display: flex;
+  align-items: center;
+  border: 1px solid #f0f4f4;
+  margin: 5px;
+  font-size: 15px;
+}
+.quotation,
+.quotation_date {
+  border-right: 1px solid #f0f4f4;
+  padding: 10px 15px;
+  background-color: #f0f4f4;
+  text-align: center;
+}
+.quotation_no,
+.qDate {
+  padding: 10px 15px;
+  text-align: center;
+  color: #555;
+}
+.moreInfoBtn {
+  width: 100px;
+  margin-left: auto;
+}
+
+.moreInfoBtn div {
+  background-color: rgb(0, 113, 188);
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+}

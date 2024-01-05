@@ -1,0 +1,5 @@
+.quotationpage_container {
+  grid-area: main;
+  border-top: 1px solid #c0caca;
+  box-shadow: 0 4px 6px -6px #000;
+}
