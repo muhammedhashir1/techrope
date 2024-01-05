@@ -16,13 +16,12 @@ const QuotationFields = () => {
               Customer Name <span className={styles.required}>*</span>
             </label>
             <span className={styles.newCustomer}>
-              <IoMdAddCircleOutline /> New Customer
+              <IoMdAddCircleOutline /> <span> New Customer</span>
             </span>
           </div>
           <div className={styles.customerNameOptions}>
             <select>
               <option value="">Select Customer</option>
-              {/* Add your customer options here */}
             </select>
           </div>
         </div>
@@ -101,19 +100,30 @@ const QuotationFields = () => {
               <td>
                 <div className={styles.tableIcons}>
                   <div>
-                    <BiBarcodeReader style={{ color: "blue" }} />
-                    <BiMessageDots />
+                    <BiBarcodeReader style={{ color: "blue" }} className={styles.icons_} />
+                    <BiMessageDots className={styles.icons_} />
                   </div>
                   <div>
-                    <RiDeleteBin6Line style={{ color: "red" }} />
-                    <MdOutlineSpeakerNotes />
+                    <RiDeleteBin6Line style={{ color: "red" }} className={styles.icons_} />
+                    <MdOutlineSpeakerNotes className={styles.icons_} />
                   </div>
                 </div>
               </td>
             </tr>
-            {/* Add more rows as needed */}
           </tbody>
         </table>
+      </div>
+      <div className={styles.addAnotherField}>
+        <IoMdAddCircleOutline />
+        <span>add another item</span>
+      </div>
+
+      <div className={styles.endArea_main}>
+        <div className={styles.termsAndCondition_main}>
+          <div>Terms and Condition</div>
+          <textarea placeholder="Enter your terms and conditions here..." rows={10} cols={50} />
+        </div>
+        <div className={styles.totalArea_main}></div>
       </div>
     </div>
   );

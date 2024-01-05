@@ -57,7 +57,12 @@ label {
 }
 
 .newCustomer {
+  display: flex;
+  align-items: center;
   margin-top: 5px;
+}
+.newCustomer > span {
+  padding-left: 10px;
 }
 
 .inlineField > input {
@@ -69,12 +74,21 @@ label {
   padding: 14px 5px 14px 5px;
 }
 .newItem {
-  color: rgb(0, 113, 188);
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  background-color: #f0f4f4;
+  color: rgb(0, 113, 188);
+  border: 1px solid #f0f4f4;
+  width: 150px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
 }
 .newItem span {
   padding-left: 10px;
+}
+.itemtable {
+  margin-bottom: 50px;
 }
 .table {
   width: 100%;
@@ -125,4 +139,21 @@ label {
 }
 .inputTdAlignment {
   border: 1px solid #c0caca;
+}
+.icons_ {
+  font-size: 24px;
+}
+.addAnotherField {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f0f4f4;
+  color: rgb(0, 113, 188);
+  border: 1px solid #f0f4f4;
+  width: 200px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+.addAnotherField > span {
+  padding-left: 10px;
 }
