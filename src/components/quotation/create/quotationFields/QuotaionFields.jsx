@@ -7,7 +7,7 @@ import { MdOutlineSpeakerNotes } from "react-icons/md";
 import styles from "./QuotationFields.module.css";
 import TermsAndSubTotal from "../termsAndSubtotal/TermsAndSubTotal";
 
-const QuotationFields = () => {
+const QuotationFields = ({ openNewCustModal }) => {
   return (
     <div className={styles.quotationField_Main}>
       <div className={styles.customerName_main_section}>
@@ -16,7 +16,7 @@ const QuotationFields = () => {
             <label>
               Customer Name <span className={styles.required}>*</span>
             </label>
-            <span className={styles.newCustomer}>
+            <span className={styles.newCustomer} onClick={openNewCustModal}>
               <IoMdAddCircleOutline /> <span> New Customer</span>
             </span>
           </div>

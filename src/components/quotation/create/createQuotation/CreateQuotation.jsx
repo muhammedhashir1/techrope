@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CreateQuotation.module.css";
 
-const CreateQuotation = () => {
+const CreateQuotation = ({ openMoreInfoModal }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const CreateQuotation = () => {
             <div className={styles.quotation_date}>Date</div>
             <div className={styles.qDate}>{currentDate.toLocaleString()}</div>
           </div>
-          <div className={styles.moreInfoBtn}>
+          <div className={styles.moreInfoBtn} onClick={openMoreInfoModal}>
             <div>More Info</div>
           </div>
         </div>
