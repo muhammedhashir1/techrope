@@ -73,7 +73,7 @@ const QuotationList = () => {
   }, []);
   return (
     <>
-      <QuotationHeader />
+      <QuotationHeader itemsCount={quotations.length} />
       <div className={styles.quotationlist_container}>
         <div className={styles.sortSection}>
           <div className={styles.leftSection}>

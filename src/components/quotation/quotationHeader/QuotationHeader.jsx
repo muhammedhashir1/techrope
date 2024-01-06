@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import styles from "./QuotationHeader.module.css";
 
-const QuotationHeader = () => {
+const QuotationHeader = ({ itemsCount }) => {
   const [showItems, setShowItems] = useState(false);
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const QuotationHeader = () => {
         <div className={styles.leftSide}>
           <div className={styles.heading}>
             Quotation Report
-            <div className={styles.blueCircle}>0</div>
+            <div className={styles.blueCircle}>{itemsCount}</div>
           </div>
           <div className={styles.subhead}>Keep track of the Quotations.</div>
         </div>
