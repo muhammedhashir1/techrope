@@ -24,10 +24,17 @@ label {
   width: 150px;
 }
 
-select,
-input {
+select {
   width: calc(100% - 16px);
   padding: 8px;
+  color: #000;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+.inputDataFields {
+  width: calc(100% - 16px);
+  padding: 4px;
   color: #000;
   margin-bottom: 12px;
   border-radius: 10px;

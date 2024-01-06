@@ -30,3 +30,12 @@
   font-size: 20px;
   padding: 25px;
 }
+.subledgerBillWise {
+  display: inline-grid;
+  align-items: center;
+}
+.subledger,
+.BillWise {
+  display: inline-flex;
+  align-items: center;
+}

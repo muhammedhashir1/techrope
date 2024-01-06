@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdArrowDropDown } from "react-icons/md";
 import { FaFilter } from "react-icons/fa";
 import styles from "./QuotationList.module.css";
@@ -40,6 +40,37 @@ const QuotationList = () => {
     });
   };
 
+  const [quotations, setQuotations] = useState([]);
+
+  const fetchQuotations = async () => {
+    const apiUrl =
+      "https://mysaleappreportsapi-7lfpakcp7q-el.a.run.app/api/v1/Quotation?pageNo=1&pageSize=10&desc=false&startDate=2024-01-06&endDate=2024-01-06&sortType=&branchId=63870b069a2ce6762c64444b&companyId=6358dc15fa7df86801678548";
+
+    const dbName = "mysaledb88410944444";
+
+    try {
+      const response = await fetch(apiUrl, {
+        headers: {
+          dbName: dbName,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      console.log("Quotations Data:", data.data);
+      setQuotations(data.data); // Set quotations state with the fetched data
+    } catch (error) {
+      console.error("Error fetching quotations:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuotations();
+  }, []);
   return (
     <>
       <QuotationHeader />
@@ -57,11 +88,23 @@ const QuotationList = () => {
             </label>
             <label>
               From:
-              <input type="date" name="from" value={searchParams.from} onChange={handleSearchParamsChange} />
+              <input
+                type="date"
+                name="from"
+                value={searchParams.from}
+                onChange={handleSearchParamsChange}
+                className={styles.inputDataFields}
+              />
             </label>
             <label>
               To:
-              <input type="date" name="to" value={searchParams.to} onChange={handleSearchParamsChange} />
+              <input
+                type="date"
+                name="to"
+                value={searchParams.to}
+                onChange={handleSearchParamsChange}
+                className={styles.inputDataFields}
+              />
             </label>
             <label>
               Sort By:
@@ -106,19 +149,20 @@ const QuotationList = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Q1001</td>
-                <td>2022-01-01</td>
-                <td>Customer A</td>
-                <td style={{ textAlign: "right" }}>100.00 AED</td>
-                <td style={{ textAlign: "right" }}>5.00 AED</td>
-                <td style={{ textAlign: "right" }}>105.00 AED</td>
-                <td>
-                  <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
-                  <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
-                </td>
-              </tr>
-              {/* Add more rows as needed */}
+              {quotations.map((quotation) => (
+                <tr key={quotation.quotationId}>
+                  <td>{quotation.quotationNo}</td>
+                  <td>{quotation.quotationDate}</td>
+                  <td>{quotation.customerName}</td>
+                  <td style={{ textAlign: "right" }}>{quotation.netValue}</td>
+                  <td style={{ textAlign: "right" }}>{quotation.taxAmount}</td>
+                  <td style={{ textAlign: "right" }}>{quotation.netAmount}</td>
+                  <td>
+                    <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
+                    <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
             <tfoot>
               <tr>
