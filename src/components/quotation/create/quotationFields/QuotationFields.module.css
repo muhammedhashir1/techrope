@@ -65,13 +65,13 @@ label {
   padding-left: 10px;
 }
 
-.inlineField > input {
+.inlineField .inlineField_cstmr {
   width: calc(100% - 16px);
   color: #c0caca;
   margin-bottom: 12px;
   border-radius: 10px;
   border: 1px solid;
-  padding: 14px 5px 14px 5px;
+  padding: 7px 5px 14px 5px;
 }
 .newItem {
   display: inline-flex;
@@ -111,7 +111,7 @@ label {
   color: #c0caca;
 }
 
-.table td input,
+.table td .itemtable_input,
 .table td select {
   width: calc(100% - 12px);
   color: #c0caca;
@@ -156,4 +156,9 @@ label {
 }
 .addAnotherField > span {
   padding-left: 10px;
+}
+.endArea_main {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }

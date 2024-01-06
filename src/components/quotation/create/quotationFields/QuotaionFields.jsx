@@ -5,6 +5,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiMessageDots } from "react-icons/bi";
 import { MdOutlineSpeakerNotes } from "react-icons/md";
 import styles from "./QuotationFields.module.css";
+import TermsAndSubTotal from "../termsAndSubtotal/TermsAndSubTotal";
 
 const QuotationFields = () => {
   return (
@@ -28,13 +29,13 @@ const QuotationFields = () => {
         <div className={`${styles.inputContainer} ${styles.phoneNumber}`}>
           <label>Phone Number</label>
           <div className={styles.inlineField}>
-            <input type="tel" placeholder="phone number" />
+            <input type="tel" placeholder="phone number" className={styles.inlineField_cstmr} />
           </div>
         </div>
         <div className={`${styles.inputContainer} ${styles.narration}`}>
           <label>Narration</label>
           <div className={styles.inlineField}>
-            <input type="text" placeholder="narration" />
+            <input type="text" placeholder="narration" className={styles.inlineField_cstmr} />
           </div>
         </div>
       </div>
@@ -69,7 +70,7 @@ const QuotationFields = () => {
                 </select>
               </td>
               <td>
-                <input type="text" style={{ border: "1px solid #c0caca" }} />
+                <input type="text" style={{ border: "1px solid #c0caca" }} className={styles.itemtable_input} />
               </td>
               <td>
                 <select style={{ border: "1px solid #c0caca" }}>
@@ -77,25 +78,53 @@ const QuotationFields = () => {
                 </select>
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
-                <input type="text" className={styles.inputTdAlignment} style={{ textAlign: "right" }} />
+                <input
+                  type="text"
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                />
               </td>
               <td>
                 <div className={styles.tableIcons}>
@@ -118,13 +147,7 @@ const QuotationFields = () => {
         <span>add another item</span>
       </div>
 
-      <div className={styles.endArea_main}>
-        <div className={styles.termsAndCondition_main}>
-          <div>Terms and Condition</div>
-          <textarea placeholder="Enter your terms and conditions here..." rows={10} cols={50} />
-        </div>
-        <div className={styles.totalArea_main}></div>
-      </div>
+      <TermsAndSubTotal />
     </div>
   );
 };

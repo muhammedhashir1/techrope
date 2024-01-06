@@ -20,6 +20,15 @@ a {
   color: inherit;
   text-decoration: none;
 }
+input {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
 .container {
   width: 100%;
   max-width: 1350px;
