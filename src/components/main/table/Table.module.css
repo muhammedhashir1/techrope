@@ -99,10 +99,12 @@ th,
 td {
   padding: 10px;
   border: none;
-  border-bottom: 1px solid #c0caca;
   font-family: "Poppins", sans-serif;
   font-size: 10px;
   text-align: left;
+}
+.td {
+  border-bottom: 1px solid #c0caca;
 }
 
 .actionButton {

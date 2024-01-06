@@ -121,13 +121,19 @@ const Table = () => {
                   {items.length > 0 ? (
                     items.map((item) => (
                       <tr key={item.id}>
-                        <td>{item.itemName}</td>
-                        <td>{item.itemCode}</td>
-                        <td>{item.categoryId}</td>
-                        <td style={{ textAlign: "right" }}>{item.landingCost}</td>
-                        <td style={{ textAlign: "right" }}>{item.taxIncAmount}</td>
-                        <td style={{ textAlign: "right" }}>{item.stock}</td>
-                        <td>
+                        <td className={styles.td}>{item.itemName}</td>
+                        <td className={styles.td}>{item.itemCode}</td>
+                        <td className={styles.td}>{item.categoryId}</td>
+                        <td className={styles.td} style={{ textAlign: "right" }}>
+                          {item.landingCost}
+                        </td>
+                        <td className={styles.td} style={{ textAlign: "right" }}>
+                          {item.taxIncAmount}
+                        </td>
+                        <td className={styles.td} style={{ textAlign: "right" }}>
+                          {item.stock}
+                        </td>
+                        <td className={styles.td}>
                           <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
                           <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
                         </td>

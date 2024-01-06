@@ -32,7 +32,9 @@
 .tableCol_subTotal {
   background-color: #f0f4f4;
   border: 0.1px solid #889292;
-  padding: 10px 20px;
+  padding: 10px;
+  width: 85%;
+  border-radius: 10px;
 }
 .tax_exc {
   border: 1px solid rgb(0, 113, 188);

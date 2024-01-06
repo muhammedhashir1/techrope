@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { MdArrowDropDown } from "react-icons/md";
+import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
 import { FaFilter } from "react-icons/fa";
 import styles from "./QuotationList.module.css";
+import moment from "moment";
 import QuotationHeader from "../quotationHeader/QuotationHeader";
 
 const QuotationList = () => {
@@ -71,13 +72,33 @@ const QuotationList = () => {
   useEffect(() => {
     fetchQuotations();
   }, []);
+
+  const [expandedRows, setExpandedRows] = useState([]);
+
+  const toggleDetails = (quotationId) => {
+    setExpandedRows((prevRows) => {
+      if (prevRows.includes(quotationId)) {
+        // If the row is already expanded, remove it from the list
+        return prevRows.filter((row) => row !== quotationId);
+      } else {
+        // If the row is not expanded, add it to the list
+        return [...prevRows, quotationId];
+      }
+    });
+  };
+  const [activeButton, setActiveButton] = useState("Quotation Info");
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button);
+  };
+
   return (
     <>
       <QuotationHeader itemsCount={quotations.length} />
       <div className={styles.quotationlist_container}>
         <div className={styles.sortSection}>
           <div className={styles.leftSection}>
-            <label>
+            <label className={styles.labelTitle}>
               Search By:
               <select name="searchBy" value={searchParams.searchBy} onChange={handleSearchParamsChange}>
                 <option value="All">All</option>
@@ -86,7 +107,7 @@ const QuotationList = () => {
                 {/* Add other options */}
               </select>
             </label>
-            <label>
+            <label className={styles.labelTitle}>
               From:
               <input
                 type="date"
@@ -96,7 +117,7 @@ const QuotationList = () => {
                 className={styles.inputDataFields}
               />
             </label>
-            <label>
+            <label className={styles.labelTitle}>
               To:
               <input
                 type="date"
@@ -106,7 +127,7 @@ const QuotationList = () => {
                 className={styles.inputDataFields}
               />
             </label>
-            <label>
+            <label className={styles.labelTitle}>
               Sort By:
               <select name="sortBy" value={searchParams.sortBy} onChange={handleSearchParamsChange}>
                 <option value="All">All</option>
@@ -115,7 +136,7 @@ const QuotationList = () => {
                 {/* Add other options */}
               </select>
             </label>
-            <label>
+            <label className={styles.labelTitle}>
               Sort Order:
               <select name="sortOrder" value={searchParams.sortOrder} onChange={handleSearchParamsChange}>
                 <option value="Ascending">Ascending</option>
@@ -139,6 +160,7 @@ const QuotationList = () => {
           <table className={styles.table}>
             <thead>
               <tr>
+                <th></th>
                 <th>QUOTATION NO</th>
                 <th>QUOTATION DATE</th>
                 <th>CUSTOMER NAME</th>
@@ -150,24 +172,206 @@ const QuotationList = () => {
             </thead>
             <tbody>
               {quotations.map((quotation) => (
-                <tr key={quotation.quotationId}>
-                  <td>{quotation.quotationNo}</td>
-                  <td>{quotation.quotationDate}</td>
-                  <td>{quotation.customerName}</td>
-                  <td style={{ textAlign: "right" }}>{quotation.netValue}</td>
-                  <td style={{ textAlign: "right" }}>{quotation.taxAmount}</td>
-                  <td style={{ textAlign: "right" }}>{quotation.netAmount}</td>
-                  <td>
-                    <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
-                    <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
-                  </td>
-                </tr>
+                <React.Fragment key={quotation.quotationId}>
+                  <tr key={quotation.quotationId}>
+                    <td className={styles.td}>
+                      <button onClick={() => toggleDetails(quotation.quotationId)}>
+                        {expandedRows.includes(quotation.quotationId) ? (
+                          <TiArrowSortedUp className={styles.iconsArrow} />
+                        ) : (
+                          <TiArrowSortedDown className={styles.iconsArrow} />
+                        )}
+                      </button>
+                    </td>
+                    <td className={styles.td}>{quotation.quotationNo}</td>
+                    <td className={styles.td}>{quotation.quotationDate}</td>
+                    <td className={styles.td}>{quotation.customerName}</td>
+                    <td className={styles.td} style={{ textAlign: "right" }}>
+                      {quotation.netValue}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: "right" }}>
+                      {quotation.taxAmount}
+                    </td>
+                    <td className={styles.td} style={{ textAlign: "right" }}>
+                      {quotation.netAmount}
+                    </td>
+                    <td className={styles.td}>
+                      <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
+                      <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
+                    </td>
+                  </tr>
+                  {expandedRows.includes(quotation.quotationId) && (
+                    <tr>
+                      <td colSpan="8">
+                        <div className={styles.reportDetailingMain}>
+                          <div className={styles.reportBtns_Main}>
+                            <button
+                              className={`${styles.reportBtns} ${
+                                activeButton === "Quotation Info" ? styles.activeButton : ""
+                              }`}
+                              onClick={() => handleButtonClick("Quotation Info")}
+                            >
+                              Quotation Info
+                            </button>
+                            <button
+                              className={`${styles.reportBtns} ${
+                                activeButton === "Quotation Details" ? styles.activeButton : ""
+                              }`}
+                              onClick={() => handleButtonClick("Quotation Details")}
+                            >
+                              Quotation Details
+                            </button>
+                          </div>
+                          {activeButton === "Quotation Info" && (
+                            <div className={styles.quotationInfoMain}>
+                              <div className={styles.quotationInfoMain_Table}>
+                                <table className={styles.table_out}>
+                                  <tbody>
+                                    <tr>
+                                      <td className={styles.infoTd}>Branch</td>
+                                      <td>: {quotation.branchName}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Quotation Number</td>
+                                      <td>: {quotation.quotationNo}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Quotation Date</td>
+                                      <td>: {moment(quotation.quotationDate).format("lll")}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Customer Name</td>
+                                      <td>: {quotation.customerName}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Phone Number</td>
+                                      <td>: {quotation.phoneNumber}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Employee Name</td>
+                                      <td>: {quotation.employeeName}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table className={styles.table_out}>
+                                  <tbody>
+                                    <tr>
+                                      <td className={styles.infoTd}>Stock Location</td>
+                                      <td>: {quotation.stockLocationName}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Narration</td>
+                                      <td>: {quotation.narration}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Gross Amount</td>
+                                      <td>: {quotation.grossAmount}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Discount Amount</td>
+                                      <td>: {quotation.discountAmount}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table className={styles.table_out}>
+                                  <tbody>
+                                    <tr>
+                                      <td className={styles.infoTd}>Additional Charges</td>
+                                      <td>: {quotation.additionalExpense}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Net Value</td>
+                                      <td>: {quotation.netValue}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Tax Amount</td>
+                                      <td>: {quotation.taxAmount}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Round Off</td>
+                                      <td>: {quotation.roundOff}</td>
+                                    </tr>
+                                    <tr>
+                                      <td className={styles.infoTd}>Net Amount</td>
+                                      <td>: {quotation.branchName}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          )}
+                          {activeButton === "Quotation Details" && (
+                            <div className={styles.quotationDetailsMain}>
+                              <div className={styles.quotationDetailsMain_Table}>
+                                <table className={styles.table_out}>
+                                  <thead>
+                                    <tr>
+                                      <th></th>
+                                      <th>SL NO</th>
+                                      <th>ITEM NAME</th>
+                                      <th>QTY</th>
+                                      <th>FREE QTY</th>
+                                      <th>RATE (INCL)</th>
+                                      <th>RATE (EXCL)</th>
+                                      <th>GROSS AMOUNT</th>
+                                      <th>DISCOUNT</th>
+                                      <th>NET VALUE</th>
+                                      <th>TAX%</th>
+                                      <th>TAX AMOUNT</th>
+                                      <th>NET AMOUNT</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {/* Sample data row */}
+                                    <tr>
+                                      <td></td>
+                                      <td>1</td>
+                                      <td>Sample Item</td>
+                                      <td>1</td>
+                                      <td>0</td>
+                                      <td>50000</td>
+                                      <td></td>
+                                      <td>50000</td>
+                                      <td></td>
+                                      <td>50000</td>
+                                      <td></td>
+                                      <td>0</td>
+                                      <td>50000</td>
+                                    </tr>
+                                  </tbody>
+                                  <tfoot>
+                                    <tr>
+                                      <th></th>
+                                      <th>Total</th>
+                                      <th rowSpan="5"></th>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td>50000</td>
+                                      <td></td>
+                                      <td>0</td>
+                                      <td>0</td>
+                                      <td>50000</td>
+                                    </tr>
+                                  </tfoot>
+                                </table>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))}
             </tbody>
             <tfoot>
               <tr>
                 <th style={{ textAlign: "left" }}>TOTAL</th>
                 <td colSpan="3"></td>
+                <td style={{ textAlign: "right" }}>0.00 AED</td>
                 <td style={{ textAlign: "right" }}>0.00 AED</td>
                 <td style={{ textAlign: "right" }}>0.00 AED</td>
                 <td></td>
