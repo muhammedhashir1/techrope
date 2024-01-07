@@ -381,7 +381,7 @@ const QuotationList = () => {
                                     {/* Sample data row */}
                                     <tr>
                                       <td></td>
-                                      <td>1 </td>
+                                      <td>1</td>
                                       <td></td>
                                       <td></td>
                                       <td></td>
@@ -404,12 +404,57 @@ const QuotationList = () => {
                                       <td></td>
                                       <td></td>
                                       <td></td>
-                                      <td>5454</td>
-                                      <td>50000</td>
-                                      <td>2000</td>
+                                      <td>
+                                        {/* Calculate the total GROSS AMOUNT for the current quotation */}
+                                        {quotations
+                                          .reduce(
+                                            (total, q) =>
+                                              total + (q.quotationId === quotation.quotationId ? q.grossAmount : 0),
+                                            0
+                                          )
+                                          .toFixed(2)}
+                                      </td>
+                                      <td>
+                                        {/* Calculate the total DISCOUNT for the current quotation */}
+                                        {quotations
+                                          .reduce(
+                                            (total, q) =>
+                                              total + (q.quotationId === quotation.quotationId ? q.discountAmount : 0),
+                                            0
+                                          )
+                                          .toFixed(2)}
+                                      </td>
+                                      <td>
+                                        {/* Calculate the total NET VALUE for the current quotation */}
+                                        {quotations
+                                          .reduce(
+                                            (total, q) =>
+                                              total + (q.quotationId === quotation.quotationId ? q.netValue : 0),
+                                            0
+                                          )
+                                          .toFixed(2)}
+                                      </td>
                                       <td></td>
-                                      <td>0</td>
-                                      <td>50000</td>
+                                      <td>
+                                        {/* Calculate the total TAX AMOUNT for the current quotation */}
+                                        {quotations
+                                          .reduce(
+                                            (total, q) =>
+                                              total + (q.quotationId === quotation.quotationId ? q.taxAmount : 0),
+                                            0
+                                          )
+                                          .toFixed(2)}
+                                      </td>
+                                      <td>
+                                        {/* Calculate the total NET AMOUNT for the current quotation */}
+                                        {quotations
+                                          .reduce(
+                                            (total, q) =>
+                                              total + (q.quotationId === quotation.quotationId ? q.netAmount : 0),
+                                            0
+                                          )
+                                          .toFixed(2)}
+                                      </td>
                                     </tr>
                                   </tfoot>
                                 </table>
