@@ -92,6 +92,63 @@ const QuotationList = () => {
     });
   };
 
+  const [totals, setTotals] = useState({
+    netValue: 0,
+    taxAmount: 0,
+    netAmount: 0,
+  });
+
+  const [detailsTotals, setDetailsTotals] = useState({
+    grossAmount: 0,
+    discountAmount: 0,
+    netValue: 0,
+    taxAmount: 0,
+    netAmount: 0,
+  });
+
+  useEffect(() => {
+    // Calculate totals when quotations change
+    const calculateTotals = () => {
+      let totalNetValue = 0;
+      let totalTaxAmount = 0;
+      let totalNetAmount = 0;
+
+      let totalGrossAmount = 0;
+      let totalDiscountAmount = 0;
+      let totalDetailsNetValue = 0;
+      let totalTaxAmountDetails = 0;
+      let totalDetailsNetAmount = 0;
+
+      quotations.forEach((quotation) => {
+        totalNetValue += quotation.netValue;
+        totalTaxAmount += quotation.taxAmount;
+        totalNetAmount += quotation.netAmount;
+
+        // Assuming these fields are present in your quotation object
+        totalGrossAmount += quotation.grossAmount;
+        totalDiscountAmount += quotation.discountAmount;
+        totalDetailsNetValue += quotation.netValue;
+        totalTaxAmountDetails += quotation.taxAmount;
+        totalDetailsNetAmount += quotation.netAmount;
+      });
+
+      setTotals({
+        netValue: totalNetValue,
+        taxAmount: totalTaxAmount,
+        netAmount: totalNetAmount,
+      });
+
+      setDetailsTotals({
+        grossAmount: totalGrossAmount,
+        discountAmount: totalDiscountAmount,
+        netValue: totalDetailsNetValue,
+        taxAmount: totalTaxAmountDetails,
+        netAmount: totalDetailsNetAmount,
+      });
+    };
+
+    calculateTotals();
+  }, [quotations]);
   return (
     <>
       <QuotationHeader itemsCount={quotations.length} />
@@ -133,7 +190,6 @@ const QuotationList = () => {
                 <option value="All">All</option>
                 <option value="QuotationNumber">Quotation Number</option>
                 <option value="QuotationDate">Quotation Date</option>
-                {/* Add other options */}
               </select>
             </label>
             <label className={styles.labelTitle}>
@@ -348,10 +404,10 @@ const QuotationList = () => {
                                       <td></td>
                                       <td></td>
                                       <td></td>
-                                      <td></td>
+                                      <td>5454</td>
                                       <td>50000</td>
+                                      <td>2000</td>
                                       <td></td>
-                                      <td>0</td>
                                       <td>0</td>
                                       <td>50000</td>
                                     </tr>
@@ -371,9 +427,9 @@ const QuotationList = () => {
               <tr>
                 <th style={{ textAlign: "left" }}>TOTAL</th>
                 <td colSpan="3"></td>
-                <td style={{ textAlign: "right" }}>0.00 AED</td>
-                <td style={{ textAlign: "right" }}>0.00 AED</td>
-                <td style={{ textAlign: "right" }}>0.00 AED</td>
+                <td style={{ textAlign: "right" }}>{totals.netValue.toFixed(2)} AED</td>
+                <td style={{ textAlign: "right" }}>{totals.taxAmount.toFixed(2)} AED</td>
+                <td style={{ textAlign: "right" }}>{totals.netAmount.toFixed(2)} AED</td>
                 <td></td>
               </tr>
             </tfoot>
