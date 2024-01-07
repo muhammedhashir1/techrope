@@ -78,18 +78,18 @@ const QuotationList = () => {
   const toggleDetails = (quotationId) => {
     setExpandedRows((prevRows) => {
       if (prevRows.includes(quotationId)) {
-        // If the row is already expanded, remove it from the list
         return prevRows.filter((row) => row !== quotationId);
       } else {
-        // If the row is not expanded, add it to the list
         return [...prevRows, quotationId];
       }
     });
   };
-  const [activeButton, setActiveButton] = useState("Quotation Info");
+  const [activeButtons, setActiveButtons] = useState({});
 
-  const handleButtonClick = (button) => {
-    setActiveButton(button);
+  const handleButtonClick = (quotationId, button) => {
+    setActiveButtons((prevButtons) => {
+      return { ...prevButtons, [quotationId]: button };
+    });
   };
 
   return (
@@ -207,22 +207,22 @@ const QuotationList = () => {
                           <div className={styles.reportBtns_Main}>
                             <button
                               className={`${styles.reportBtns} ${
-                                activeButton === "Quotation Info" ? styles.activeButton : ""
+                                activeButtons[quotation.quotationId] === "Quotation Info" ? styles.activeButton : ""
                               }`}
-                              onClick={() => handleButtonClick("Quotation Info")}
+                              onClick={() => handleButtonClick(quotation.quotationId, "Quotation Info")}
                             >
                               Quotation Info
                             </button>
                             <button
                               className={`${styles.reportBtns} ${
-                                activeButton === "Quotation Details" ? styles.activeButton : ""
+                                activeButtons[quotation.quotationId] === "Quotation Details" ? styles.activeButton : ""
                               }`}
-                              onClick={() => handleButtonClick("Quotation Details")}
+                              onClick={() => handleButtonClick(quotation.quotationId, "Quotation Details")}
                             >
                               Quotation Details
                             </button>
                           </div>
-                          {activeButton === "Quotation Info" && (
+                          {activeButtons[quotation.quotationId] === "Quotation Info" && (
                             <div className={styles.quotationInfoMain}>
                               <div className={styles.quotationInfoMain_Table}>
                                 <table className={styles.table_out}>
@@ -300,7 +300,7 @@ const QuotationList = () => {
                               </div>
                             </div>
                           )}
-                          {activeButton === "Quotation Details" && (
+                          {activeButtons[quotation.quotationId] === "Quotation Details" && (
                             <div className={styles.quotationDetailsMain}>
                               <div className={styles.quotationDetailsMain_Table}>
                                 <table className={styles.table_out}>
@@ -325,18 +325,18 @@ const QuotationList = () => {
                                     {/* Sample data row */}
                                     <tr>
                                       <td></td>
-                                      <td>1</td>
-                                      <td>Sample Item</td>
-                                      <td>1</td>
-                                      <td>0</td>
-                                      <td>50000</td>
+                                      <td>1 </td>
                                       <td></td>
-                                      <td>50000</td>
                                       <td></td>
-                                      <td>50000</td>
                                       <td></td>
-                                      <td>0</td>
-                                      <td>50000</td>
+                                      <td></td>
+                                      <td></td>
+                                      <td>{quotation.grossAmount}</td>
+                                      <td>{quotation.discountAmount}</td>
+                                      <td>{quotation.netValue}</td>
+                                      <td></td>
+                                      <td>{quotation.taxAmount}</td>
+                                      <td>{quotation.netAmount}</td>
                                     </tr>
                                   </tbody>
                                   <tfoot>
