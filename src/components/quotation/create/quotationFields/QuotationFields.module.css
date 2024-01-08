@@ -48,12 +48,13 @@ label {
   align-items: center;
 }
 
-.customerNameOptions select {
+.customerNameOptions .select {
   flex: 1;
   margin-right: 10px;
   color: #c0caca;
   padding: 12px 5px 14px 5px;
   border: 1px solid #c0caca;
+  border-radius: 10px;
 }
 
 .newCustomer {
@@ -112,7 +113,7 @@ label {
 }
 
 .table td .itemtable_input,
-.table td select {
+.table td .select {
   width: calc(100% - 12px);
   color: #c0caca;
   margin-bottom: 8px;

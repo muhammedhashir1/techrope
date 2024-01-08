@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TiArrowSortedDown, TiArrowSortedUp } from "react-icons/ti";
-import { FaFilter } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight, FaFilter } from "react-icons/fa";
 import styles from "./QuotationList.module.css";
 import moment from "moment";
 import QuotationHeader from "../quotationHeader/QuotationHeader";
+import QuotationRow from "./QuotationRow";
 
 const QuotationList = () => {
-  const getCurrentDate = () => {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
-    const yyyy = today.getFullYear();
-    return `${yyyy}-${mm}-${dd}`;
-  };
+  const getCurrentDate = () => moment().format("YYYY-MM-DD");
 
   const [searchParams, setSearchParams] = useState({
     searchBy: "All",
@@ -22,82 +17,48 @@ const QuotationList = () => {
     sortOrder: "Ascending",
   });
 
-  const handleSearchParamsChange = (e) => {
-    const { name, value } = e.target;
-    setSearchParams({ ...searchParams, [name]: value });
-  };
-
+  const handleSearchParamsChange = (e) => setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
   const handleShow = () => {
-    // Add your logic to show/hide filter options
+    console.log("Show button clicked");
   };
 
-  const handleClear = () => {
-    setSearchParams({
-      searchBy: "All",
-      from: getCurrentDate(),
-      to: getCurrentDate(),
-      sortBy: "All",
-      sortOrder: "Ascending",
-    });
-  };
+  const handleClear = () => {};
 
   const [quotations, setQuotations] = useState([]);
 
-  const fetchQuotations = async () => {
-    const apiUrl =
-      "https://mysaleappreportsapi-7lfpakcp7q-el.a.run.app/api/v1/Quotation?pageNo=1&pageSize=10&desc=false&startDate=2024-01-06&endDate=2024-01-06&sortType=&branchId=63870b069a2ce6762c64444b&companyId=6358dc15fa7df86801678548";
-
-    const dbName = "mysaledb88410944444";
-
-    try {
-      const response = await fetch(apiUrl, {
-        headers: {
-          dbName: dbName,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      console.log("Quotations Data:", data.data);
-      setQuotations(data.data); // Set quotations state with the fetched data
-    } catch (error) {
-      console.error("Error fetching quotations:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchQuotations = async () => {
+      try {
+        const response = await fetch(
+          "https://mysaleappreportsapi-7lfpakcp7q-el.a.run.app/api/v1/Quotation?pageNo=1&pageSize=10&desc=false&startDate=2024-01-06&endDate=2024-01-06&sortType=&branchId=63870b069a2ce6762c64444b&companyId=6358dc15fa7df86801678548",
+          {
+            headers: { dbName: "mysaledb88410944444" },
+          }
+        );
+
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+        const data = await response.json();
+        setQuotations(data.data);
+      } catch (error) {
+        console.error("Error fetching quotations:", error);
+      }
+    };
+
     fetchQuotations();
   }, []);
 
   const [expandedRows, setExpandedRows] = useState([]);
+  const toggleDetails = (quotationId) =>
+    setExpandedRows((prevRows) =>
+      prevRows.includes(quotationId) ? prevRows.filter((row) => row !== quotationId) : [...prevRows, quotationId]
+    );
 
-  const toggleDetails = (quotationId) => {
-    setExpandedRows((prevRows) => {
-      if (prevRows.includes(quotationId)) {
-        return prevRows.filter((row) => row !== quotationId);
-      } else {
-        return [...prevRows, quotationId];
-      }
-    });
-  };
   const [activeButtons, setActiveButtons] = useState({});
+  const handleButtonClick = (quotationId, button) =>
+    setActiveButtons((prevButtons) => ({ ...prevButtons, [quotationId]: button }));
 
-  const handleButtonClick = (quotationId, button) => {
-    setActiveButtons((prevButtons) => {
-      return { ...prevButtons, [quotationId]: button };
-    });
-  };
-
-  const [totals, setTotals] = useState({
-    netValue: 0,
-    taxAmount: 0,
-    netAmount: 0,
-  });
-
+  const [totals, setTotals] = useState({ netValue: 0, taxAmount: 0, netAmount: 0 });
   const [detailsTotals, setDetailsTotals] = useState({
     grossAmount: 0,
     discountAmount: 0,
@@ -107,37 +68,42 @@ const QuotationList = () => {
   });
 
   useEffect(() => {
-    // Calculate totals when quotations change
     const calculateTotals = () => {
-      let totalNetValue = 0;
-      let totalTaxAmount = 0;
-      let totalNetAmount = 0;
+      const initialValue = {
+        totalNetValue: 0,
+        totalTaxAmount: 0,
+        totalNetAmount: 0,
+        totalGrossAmount: 0,
+        totalDiscountAmount: 0,
+        totalDetailsNetValue: 0,
+        totalTaxAmountDetails: 0,
+        totalDetailsNetAmount: 0,
+      };
 
-      let totalGrossAmount = 0;
-      let totalDiscountAmount = 0;
-      let totalDetailsNetValue = 0;
-      let totalTaxAmountDetails = 0;
-      let totalDetailsNetAmount = 0;
+      const {
+        totalNetValue,
+        totalTaxAmount,
+        totalNetAmount,
+        totalGrossAmount,
+        totalDiscountAmount,
+        totalDetailsNetValue,
+        totalTaxAmountDetails,
+        totalDetailsNetAmount,
+      } = quotations.reduce(
+        (acc, quotation) => ({
+          totalNetValue: acc.totalNetValue + quotation.netValue,
+          totalTaxAmount: acc.totalTaxAmount + quotation.taxAmount,
+          totalNetAmount: acc.totalNetAmount + quotation.netAmount,
+          totalGrossAmount: acc.totalGrossAmount + quotation.grossAmount,
+          totalDiscountAmount: acc.totalDiscountAmount + quotation.discountAmount,
+          totalDetailsNetValue: acc.totalDetailsNetValue + quotation.netValue,
+          totalTaxAmountDetails: acc.totalTaxAmountDetails + quotation.taxAmount,
+          totalDetailsNetAmount: acc.totalDetailsNetAmount + quotation.netAmount,
+        }),
+        initialValue
+      );
 
-      quotations.forEach((quotation) => {
-        totalNetValue += quotation.netValue;
-        totalTaxAmount += quotation.taxAmount;
-        totalNetAmount += quotation.netAmount;
-
-        // Assuming these fields are present in your quotation object
-        totalGrossAmount += quotation.grossAmount;
-        totalDiscountAmount += quotation.discountAmount;
-        totalDetailsNetValue += quotation.netValue;
-        totalTaxAmountDetails += quotation.taxAmount;
-        totalDetailsNetAmount += quotation.netAmount;
-      });
-
-      setTotals({
-        netValue: totalNetValue,
-        taxAmount: totalTaxAmount,
-        netAmount: totalNetAmount,
-      });
-
+      setTotals({ netValue: totalNetValue, taxAmount: totalTaxAmount, netAmount: totalNetAmount });
       setDetailsTotals({
         grossAmount: totalGrossAmount,
         discountAmount: totalDiscountAmount,
@@ -149,6 +115,32 @@ const QuotationList = () => {
 
     calculateTotals();
   }, [quotations]);
+
+  // New state for pagination
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Calculate total pages based on the pageSize
+  const totalPages = Math.ceil(quotations.length / pageSize);
+
+  // Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
+  // Get the current page items
+  const currentQuotations = quotations.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // Handle pageSize change
+  const handlePageSizeChange = (e) => {
+    setPageSize(parseInt(e.target.value, 10));
+    setCurrentPage(1); // Reset to the first page when pageSize changes
+  };
+
   return (
     <>
       <QuotationHeader itemsCount={quotations.length} />
@@ -157,11 +149,22 @@ const QuotationList = () => {
           <div className={styles.leftSection}>
             <label className={styles.labelTitle}>
               Search By:
-              <select name="searchBy" value={searchParams.searchBy} onChange={handleSearchParamsChange}>
+              <select
+                className={styles.sortSelect}
+                name="searchBy"
+                value={searchParams.searchBy}
+                onChange={handleSearchParamsChange}
+              >
                 <option value="All">All</option>
                 <option value="QuotationNumber">Quotation Number</option>
                 <option value="QuotationDate">Quotation Date</option>
-                {/* Add other options */}
+                <option value="CustomerName">Customer Name</option>
+                <option value="NetAmountEqualto">Net Amount Equal to</option>
+                <option value="NetAmountGreaterThan">Net Amount Greater than</option>
+                <option value="NetAmountLessThan">Net Amount less than</option>
+                <option value="QuotationSeries">Quotation Series</option>
+                <option value="StockLocation">StockLocation</option>
+                <option value="User">User</option>
               </select>
             </label>
             <label className={styles.labelTitle}>
@@ -186,15 +189,27 @@ const QuotationList = () => {
             </label>
             <label className={styles.labelTitle}>
               Sort By:
-              <select name="sortBy" value={searchParams.sortBy} onChange={handleSearchParamsChange}>
+              <select
+                className={styles.sortSelect}
+                name="sortBy"
+                value={searchParams.sortBy}
+                onChange={handleSearchParamsChange}
+              >
                 <option value="All">All</option>
                 <option value="QuotationNumber">Quotation Number</option>
                 <option value="QuotationDate">Quotation Date</option>
+                <option value="CustomerName">Customer Name</option>
+                <option value="NetAmount">Net Amount</option>
               </select>
             </label>
             <label className={styles.labelTitle}>
               Sort Order:
-              <select name="sortOrder" value={searchParams.sortOrder} onChange={handleSearchParamsChange}>
+              <select
+                className={styles.sortSelect}
+                name="sortOrder"
+                value={searchParams.sortOrder}
+                onChange={handleSearchParamsChange}
+              >
                 <option value="Ascending">Ascending</option>
                 <option value="Descending">Descending</option>
               </select>
@@ -227,245 +242,15 @@ const QuotationList = () => {
               </tr>
             </thead>
             <tbody>
-              {quotations.map((quotation) => (
-                <React.Fragment key={quotation.quotationId}>
-                  <tr key={quotation.quotationId}>
-                    <td className={styles.td}>
-                      <button onClick={() => toggleDetails(quotation.quotationId)}>
-                        {expandedRows.includes(quotation.quotationId) ? (
-                          <TiArrowSortedUp className={styles.iconsArrow} />
-                        ) : (
-                          <TiArrowSortedDown className={styles.iconsArrow} />
-                        )}
-                      </button>
-                    </td>
-                    <td className={styles.td}>{quotation.quotationNo}</td>
-                    <td className={styles.td}>{quotation.quotationDate}</td>
-                    <td className={styles.td}>{quotation.customerName}</td>
-                    <td className={styles.td} style={{ textAlign: "right" }}>
-                      {quotation.netValue}
-                    </td>
-                    <td className={styles.td} style={{ textAlign: "right" }}>
-                      {quotation.taxAmount}
-                    </td>
-                    <td className={styles.td} style={{ textAlign: "right" }}>
-                      {quotation.netAmount}
-                    </td>
-                    <td className={styles.td}>
-                      <button className={`${styles.actionButton} ${styles.blueButton}`}>Edit</button>
-                      <button className={`${styles.actionButton} ${styles.redButton}`}>Delete</button>
-                    </td>
-                  </tr>
-                  {expandedRows.includes(quotation.quotationId) && (
-                    <tr>
-                      <td colSpan="8">
-                        <div className={styles.reportDetailingMain}>
-                          <div className={styles.reportBtns_Main}>
-                            <button
-                              className={`${styles.reportBtns} ${
-                                activeButtons[quotation.quotationId] === "Quotation Info" ? styles.activeButton : ""
-                              }`}
-                              onClick={() => handleButtonClick(quotation.quotationId, "Quotation Info")}
-                            >
-                              Quotation Info
-                            </button>
-                            <button
-                              className={`${styles.reportBtns} ${
-                                activeButtons[quotation.quotationId] === "Quotation Details" ? styles.activeButton : ""
-                              }`}
-                              onClick={() => handleButtonClick(quotation.quotationId, "Quotation Details")}
-                            >
-                              Quotation Details
-                            </button>
-                          </div>
-                          {activeButtons[quotation.quotationId] === "Quotation Info" && (
-                            <div className={styles.quotationInfoMain}>
-                              <div className={styles.quotationInfoMain_Table}>
-                                <table className={styles.table_out}>
-                                  <tbody>
-                                    <tr>
-                                      <td className={styles.infoTd}>Branch</td>
-                                      <td>: {quotation.branchName}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Quotation Number</td>
-                                      <td>: {quotation.quotationNo}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Quotation Date</td>
-                                      <td>: {moment(quotation.quotationDate).format("lll")}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Customer Name</td>
-                                      <td>: {quotation.customerName}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Phone Number</td>
-                                      <td>: {quotation.phoneNumber}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Employee Name</td>
-                                      <td>: {quotation.employeeName}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                <table className={styles.table_out}>
-                                  <tbody>
-                                    <tr>
-                                      <td className={styles.infoTd}>Stock Location</td>
-                                      <td>: {quotation.stockLocationName}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Narration</td>
-                                      <td>: {quotation.narration}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Gross Amount</td>
-                                      <td>: {quotation.grossAmount}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Discount Amount</td>
-                                      <td>: {quotation.discountAmount}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                <table className={styles.table_out}>
-                                  <tbody>
-                                    <tr>
-                                      <td className={styles.infoTd}>Additional Charges</td>
-                                      <td>: {quotation.additionalExpense}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Net Value</td>
-                                      <td>: {quotation.netValue}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Tax Amount</td>
-                                      <td>: {quotation.taxAmount}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Round Off</td>
-                                      <td>: {quotation.roundOff}</td>
-                                    </tr>
-                                    <tr>
-                                      <td className={styles.infoTd}>Net Amount</td>
-                                      <td>: {quotation.branchName}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          )}
-                          {activeButtons[quotation.quotationId] === "Quotation Details" && (
-                            <div className={styles.quotationDetailsMain}>
-                              <div className={styles.quotationDetailsMain_Table}>
-                                <table className={styles.table_out}>
-                                  <thead>
-                                    <tr>
-                                      <th></th>
-                                      <th>SL NO</th>
-                                      <th>ITEM NAME</th>
-                                      <th>QTY</th>
-                                      <th>FREE QTY</th>
-                                      <th>RATE (INCL)</th>
-                                      <th>RATE (EXCL)</th>
-                                      <th>GROSS AMOUNT</th>
-                                      <th>DISCOUNT</th>
-                                      <th>NET VALUE</th>
-                                      <th>TAX%</th>
-                                      <th>TAX AMOUNT</th>
-                                      <th>NET AMOUNT</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {/* Sample data row */}
-                                    <tr>
-                                      <td></td>
-                                      <td>1</td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td>{quotation.grossAmount}</td>
-                                      <td>{quotation.discountAmount}</td>
-                                      <td>{quotation.netValue}</td>
-                                      <td></td>
-                                      <td>{quotation.taxAmount}</td>
-                                      <td>{quotation.netAmount}</td>
-                                    </tr>
-                                  </tbody>
-                                  <tfoot>
-                                    <tr>
-                                      <th></th>
-                                      <th>Total</th>
-                                      <th rowSpan="5"></th>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td>
-                                        {/* Calculate the total GROSS AMOUNT for the current quotation */}
-                                        {quotations
-                                          .reduce(
-                                            (total, q) =>
-                                              total + (q.quotationId === quotation.quotationId ? q.grossAmount : 0),
-                                            0
-                                          )
-                                          .toFixed(2)}
-                                      </td>
-                                      <td>
-                                        {/* Calculate the total DISCOUNT for the current quotation */}
-                                        {quotations
-                                          .reduce(
-                                            (total, q) =>
-                                              total + (q.quotationId === quotation.quotationId ? q.discountAmount : 0),
-                                            0
-                                          )
-                                          .toFixed(2)}
-                                      </td>
-                                      <td>
-                                        {/* Calculate the total NET VALUE for the current quotation */}
-                                        {quotations
-                                          .reduce(
-                                            (total, q) =>
-                                              total + (q.quotationId === quotation.quotationId ? q.netValue : 0),
-                                            0
-                                          )
-                                          .toFixed(2)}
-                                      </td>
-                                      <td></td>
-                                      <td>
-                                        {/* Calculate the total TAX AMOUNT for the current quotation */}
-                                        {quotations
-                                          .reduce(
-                                            (total, q) =>
-                                              total + (q.quotationId === quotation.quotationId ? q.taxAmount : 0),
-                                            0
-                                          )
-                                          .toFixed(2)}
-                                      </td>
-                                      <td>
-                                        {/* Calculate the total NET AMOUNT for the current quotation */}
-                                        {quotations
-                                          .reduce(
-                                            (total, q) =>
-                                              total + (q.quotationId === quotation.quotationId ? q.netAmount : 0),
-                                            0
-                                          )
-                                          .toFixed(2)}
-                                      </td>
-                                    </tr>
-                                  </tfoot>
-                                </table>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+              {currentQuotations.map((quotation) => (
+                <QuotationRow
+                  key={quotation.quotationId}
+                  quotation={quotation}
+                  toggleDetails={toggleDetails}
+                  expandedRows={expandedRows}
+                  handleButtonClick={handleButtonClick}
+                  activeButtons={activeButtons}
+                />
               ))}
             </tbody>
             <tfoot>
@@ -479,6 +264,35 @@ const QuotationList = () => {
               </tr>
             </tfoot>
           </table>
+        </div>
+        <div className={styles.pagination}>
+          <fieldset className={styles.fieldset}>
+            <legend>Items</legend>
+            <select value={pageSize} onChange={handlePageSizeChange} className={styles.select}>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="200">200</option>
+            </select>
+          </fieldset>
+          <div className={styles.btnMainPagination}>
+            <div
+              className={styles.paginationIcons}
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <FaArrowAltCircleLeft style={{ color: "#3498db" }} />
+            </div>
+            <span>{`Page ${currentPage} of ${totalPages}`}</span>
+            <div
+              className={styles.paginationIcons}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <FaArrowAltCircleRight style={{ color: "#3498db" }} />
+            </div>
+          </div>
         </div>
       </div>
     </>

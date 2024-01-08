@@ -57,7 +57,9 @@
 .selectTax {
   background-color: #f0f4f4;
   border: 0.1px solid #889292;
-  padding: 10px 23px;
+  padding: 10px 15px;
+  border: 1px solid #c0caca;
+  border-radius: 10px;
 }
 .endButtons {
   display: flex;

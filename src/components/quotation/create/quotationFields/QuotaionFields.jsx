@@ -21,7 +21,7 @@ const QuotationFields = ({ openNewCustModal }) => {
             </span>
           </div>
           <div className={styles.customerNameOptions}>
-            <select>
+            <select className={styles.select}>
               <option value="">Select Customer</option>
             </select>
           </div>
@@ -64,7 +64,7 @@ const QuotationFields = ({ openNewCustModal }) => {
             <tr>
               <td>1</td>
               <td>
-                <select style={{ border: "1px solid #c0caca" }}>
+                <select className={styles.select} style={{ border: "1px solid #c0caca" }}>
                   <option value="">Choose Item</option>
                   {/* Add your item options here */}
                 </select>
@@ -73,7 +73,7 @@ const QuotationFields = ({ openNewCustModal }) => {
                 <input type="text" style={{ border: "1px solid #c0caca" }} className={styles.itemtable_input} />
               </td>
               <td>
-                <select style={{ border: "1px solid #c0caca" }}>
+                <select className={styles.select} style={{ border: "1px solid #c0caca" }}>
                   <option value="">Choose Unit</option>
                 </select>
               </td>
