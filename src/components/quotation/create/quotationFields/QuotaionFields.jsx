@@ -54,7 +54,6 @@ const QuotationFields = ({ openNewCustModal }) => {
   const handleItemChange = (itemId) => {
     // Find the selected item details
     const selected = items.find((item) => item.id === itemId);
-    console.log(selected);
 
     // Update state with the selected item details
     setSelectedItem({
@@ -87,6 +86,19 @@ const QuotationFields = ({ openNewCustModal }) => {
       totalAmount: prevDetails.amount + prevDetails.taxAmount - discountAmount,
     }));
   };
+
+  const [subtotal, setSubtotal] = useState(0);
+  const [taxPercentage, setTaxPercentage] = useState(0);
+  const [taxAmount, setTaxAmount] = useState(0);
+  const [grandTotal, setGrandTotal] = useState(0);
+
+  useEffect(() => {
+    // Calculate subtotal, taxPercentage, taxAmount, grandTotal based on itemDetails
+    setSubtotal(itemDetails.amount);
+    setTaxPercentage(selectedItem.taxPercentage);
+    setTaxAmount(itemDetails.taxAmount);
+    setGrandTotal(itemDetails.totalAmount);
+  }, [itemDetails, selectedItem]);
   return (
     <div className={styles.quotationField_Main}>
       <div className={styles.customerName_main_section}>
@@ -249,7 +261,6 @@ const QuotationFields = ({ openNewCustModal }) => {
                 </div>
               </td>
             </tr>
-            {/* <TableRow /> */}
           </tbody>
         </table>
       </div>
@@ -258,7 +269,12 @@ const QuotationFields = ({ openNewCustModal }) => {
         <span>add another item</span>
       </div>
 
-      <TermsAndSubTotal />
+      <TermsAndSubTotal
+        subtotal={subtotal}
+        taxPercentage={taxPercentage}
+        taxAmount={taxAmount}
+        grandTotal={grandTotal}
+      />
     </div>
   );
 };

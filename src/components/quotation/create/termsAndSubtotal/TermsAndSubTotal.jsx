@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./TermsAndSubTotal.module.css";
 
-const TermsAndSubTotal = () => {
+const TermsAndSubTotal = ({ subtotal, taxPercentage, taxAmount, grandTotal }) => {
+  const [roundOffValue, setRoundOffValue] = useState("");
+
+  const handleRoundOffChange = (value) => {
+    setRoundOffValue(value);
+    updateGrandTotal(value);
+  };
+
+  const updateGrandTotal = (roundOff) => {
+    const roundOffValue = parseFloat(roundOff) || 0;
+    const updatedGrandTotal = grandTotal + roundOffValue;
+    document.getElementById("grandTotal").innerText = `$${updatedGrandTotal.toFixed(2)}`;
+  };
   return (
     <>
       <div className={styles.endArea_main}>
@@ -20,13 +32,20 @@ const TermsAndSubTotal = () => {
               <tr>
                 <th className={styles.verticalHeading}>Sub Total</th>
                 <td className={styles.verticalContent}>
-                  <input type="text" className={styles.tableCol_subTotal} placeholder="Enter sub total" />
+                  <input type="text" className={styles.tableCol_subTotal} value={subtotal.toFixed(2)} readOnly />
+                </td>
+              </tr>
+              <tr>
+                <th className={styles.verticalHeading}>Tax</th>
+                <td className={styles.verticalContent}>
+                  <input type="text" className={styles.tableCol_Tax} value={`${taxPercentage}%`} readOnly />
                 </td>
               </tr>
 
-              <tr>
+              {/* <tr>
                 <th className={styles.verticalHeading}>
-                  <span className={styles.tax_exc}>Tax Exc</span>tax
+                  <span className={styles.tax_exc}>Tax Exc</span>
+                  tax
                 </th>
                 <td className={styles.verticalContent}>
                   <span className={styles.verticalAmount}>
@@ -39,34 +58,48 @@ const TermsAndSubTotal = () => {
                     </select>
                   </span>
                 </td>
-              </tr>
+              </tr> */}
 
               <tr>
                 <th className={styles.verticalHeading}>Tax Amount</th>
                 <td className={styles.verticalAmount} style={{ textAlign: "right" }}>
-                  $90
+                  ${taxAmount.toFixed(2)}
                 </td>
               </tr>
 
               <tr>
                 <th className={styles.verticalHeading}>
                   Round Off :
-                  <span className={styles.roundOff}>
-                    <span className={styles.roundOff_add}>+</span>
-                    <span className={styles.roundOff_minus}>-</span>
+                  <span
+                    className={`${styles.roundOff_add} ${roundOffValue > 0 ? styles.active : ""}`}
+                    onClick={() => handleRoundOffChange(Math.abs(roundOffValue))}
+                  >
+                    +
+                  </span>
+                  <span
+                    className={`${styles.roundOff_minus} ${roundOffValue < 0 ? styles.active : ""}`}
+                    onClick={() => handleRoundOffChange(-Math.abs(roundOffValue))}
+                  >
+                    -
                   </span>
                 </th>
                 <td className={styles.verticalContent}>
                   <span className={styles.verticalAmount}>
-                    <input type="text" className={styles.tableCol_subTotal} placeholder="Enter roundoff" />
+                    <input
+                      type="text"
+                      className={styles.tableCol_subTotal}
+                      placeholder="Enter roundoff"
+                      value={roundOffValue}
+                      onChange={(e) => handleRoundOffChange(e.target.value)}
+                    />
                   </span>
                 </td>
               </tr>
 
               <tr>
                 <th className={styles.verticalHeading}>Grand Total</th>
-                <td className={styles.verticalAmount} style={{ textAlign: "right" }}>
-                  0
+                <td className={styles.verticalAmount} id="grandTotal" style={{ textAlign: "right" }}>
+                  ${grandTotal.toFixed(2)}
                 </td>
               </tr>
             </tbody>

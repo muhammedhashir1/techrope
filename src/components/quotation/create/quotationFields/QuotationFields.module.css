@@ -102,20 +102,20 @@ label {
   padding: 10px;
   text-align: center;
   background-color: #f0f4f4;
-  color: #889292;
+  color: #7b8787;
 }
 
 .table td {
   border: 1px solid #c0caca;
   padding: 10px;
   text-align: center;
-  color: #c0caca;
+  color: #7b8787;
 }
 
 .table td .itemtable_input,
 .table td .select {
   width: calc(100% - 12px);
-  color: #c0caca;
+  color: #7b8787;
   margin-bottom: 8px;
   border-radius: 5px;
   padding: 10px;
