@@ -43,6 +43,33 @@ const NewCustModal = ({ closeModal }) => {
                 <label htmlFor="">Maintain BillWise Details</label>
               </div>
             </div>
+            <div className={styles.twoButtonsMain}>
+              <div className={styles.addViewAddress}>Add/View Address</div>
+              <div className={styles.additionalInfo}>Additional Info</div>
+            </div>
+            <div className={styles.addressMain}>
+              <span className={styles.address}>Address</span>
+              <textarea name="" id="" cols="30" rows="10" placeholder="Address"></textarea>
+            </div>
+            <div className={styles.localAddressMain}>
+              <span className={styles.localAddress}>Local Address</span>
+              <textarea name="" id="" cols="30" rows="10" placeholder="Address"></textarea>
+            </div>
+
+            <div className={styles.zipCodeMain}>
+              <div className={styles.localAddress}>Zip Code</div>
+              <input type="text" className={styles.zipInput} />
+              <div className={styles.localAddress}>Phone</div>
+              <input type="text" className={styles.phoneInput} />
+              <div className={styles.localAddress}>Mobile</div>
+              <input type="text" className={styles.mobileInput} />
+              <div className={styles.localAddress}>Email</div>
+              <input type="text" className={styles.emailInput} />
+              <div className={styles.localAddress}>Zip Code</div>
+              <input type="text" className={styles.zipInput} />
+              <div className={styles.localAddress}>Zip Code</div>
+              <input type="text" className={styles.zipInput} />
+            </div>
 
             <label htmlFor=""></label>
           </div>

@@ -1,13 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { BiBarcodeReader } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { BiMessageDots } from "react-icons/bi";
 import { MdOutlineSpeakerNotes } from "react-icons/md";
-import styles from "./QuotationFields.module.css";
 import TermsAndSubTotal from "../termsAndSubtotal/TermsAndSubTotal";
+import styles from "./QuotationFields.module.css";
 
 const QuotationFields = ({ openNewCustModal }) => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const companyId = "6358dc15fa7df86801678548";
+        const branchId = "659b810c4b5a52942bfd71c0";
+        const apiUrl = `https://mysaleappinventoryapi-7lfpakcp7q-el.a.run.app/api/v1/Item?companyId=${companyId}&branchId=${branchId}&searchType=itemSearch&searchQuery=&pageSize=10`;
+
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Api-Key": "devinv-d5f7670519cc7e02",
+            Dbname: "mysaledb88410944444",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        setItems(data.data);
+        console.log(data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const [selectedItem, setSelectedItem] = useState({
+    unit: "",
+    rate: "",
+    taxPercentage: "",
+  });
+  const [itemDetails, setItemDetails] = useState({
+    quantity: 0,
+    amount: 0,
+    discountPercentage: 0,
+    discountAmount: 0,
+    taxAmount: 0,
+    totalAmount: 0,
+  });
+  const handleItemChange = (itemId) => {
+    // Find the selected item details
+    const selected = items.find((item) => item.id === itemId);
+    console.log(selected);
+
+    // Update state with the selected item details
+    setSelectedItem({
+      unit: selected.unitShortName,
+      rate: selected.purchaseRate,
+      taxPercentage: selected.saleTax,
+    });
+  };
+  const handleQuantityChange = (value) => {
+    const quantity = parseInt(value, 10) || 0;
+    const amount = quantity * parseFloat(selectedItem.rate) || 0;
+    const taxAmount = (amount * parseFloat(selectedItem.taxPercentage)) / 100 || 0;
+
+    setItemDetails((prevDetails) => ({
+      ...prevDetails,
+      quantity,
+      amount,
+      taxAmount,
+      totalAmount: amount + taxAmount - prevDetails.discountAmount,
+    }));
+  };
+  const handleDiscountPercentageChange = (value) => {
+    const discountPercentage = parseFloat(value) || 0;
+    const discountAmount = (discountPercentage / 100) * itemDetails.amount;
+
+    setItemDetails((prevDetails) => ({
+      ...prevDetails,
+      discountPercentage,
+      discountAmount,
+      totalAmount: prevDetails.amount + prevDetails.taxAmount - discountAmount,
+    }));
+  };
   return (
     <div className={styles.quotationField_Main}>
       <div className={styles.customerName_main_section}>
@@ -64,24 +143,44 @@ const QuotationFields = ({ openNewCustModal }) => {
             <tr>
               <td>1</td>
               <td>
-                <select className={styles.select} style={{ border: "1px solid #c0caca" }}>
+                <select
+                  className={styles.select}
+                  style={{ border: "1px solid #c0caca" }}
+                  onChange={(e) => handleItemChange(e.target.value)}
+                >
                   <option value="">Choose Item</option>
-                  {/* Add your item options here */}
-                </select>
-              </td>
-              <td>
-                <input type="text" style={{ border: "1px solid #c0caca" }} className={styles.itemtable_input} />
-              </td>
-              <td>
-                <select className={styles.select} style={{ border: "1px solid #c0caca" }}>
-                  <option value="">Choose Unit</option>
+                  {items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.itemName}
+                    </option>
+                  ))}
                 </select>
               </td>
               <td>
                 <input
                   type="text"
+                  style={{ border: "1px solid #c0caca" }}
+                  className={styles.itemtable_input}
+                  onChange={(e) => handleQuantityChange(e.target.value)}
+                />
+              </td>
+
+              <td>
+                <input
+                  type="text"
+                  style={{ border: "1px solid #c0caca" }}
+                  className={styles.itemtable_input}
+                  value={selectedItem.unit}
+                  onChange={(e) => setSelectedItem({ ...selectedItem, unit: e.target.value })}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={selectedItem.rate}
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
+                  onChange={(e) => setSelectedItem({ ...selectedItem, rate: e.target.value })}
                 />
               </td>
               <td>
@@ -89,6 +188,8 @@ const QuotationFields = ({ openNewCustModal }) => {
                   type="text"
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
+                  value={itemDetails.amount.toFixed(2)}
+                  readOnly
                 />
               </td>
               <td>
@@ -96,6 +197,7 @@ const QuotationFields = ({ openNewCustModal }) => {
                   type="text"
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
+                  onChange={(e) => handleDiscountPercentageChange(e.target.value)}
                 />
               </td>
               <td>
@@ -103,6 +205,17 @@ const QuotationFields = ({ openNewCustModal }) => {
                   type="text"
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
+                  value={itemDetails.discountAmount.toFixed(2)}
+                  readOnly
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={selectedItem.taxPercentage}
+                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
+                  style={{ textAlign: "right" }}
+                  onChange={(e) => setSelectedItem({ ...selectedItem, taxPercentage: e.target.value })}
                 />
               </td>
               <td>
@@ -110,6 +223,8 @@ const QuotationFields = ({ openNewCustModal }) => {
                   type="text"
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
+                  value={itemDetails.taxAmount.toFixed(2)}
+                  readOnly
                 />
               </td>
               <td>
@@ -117,13 +232,8 @@ const QuotationFields = ({ openNewCustModal }) => {
                   type="text"
                   className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
                   style={{ textAlign: "right" }}
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  className={`${styles.inputTdAlignment} ${styles.itemtable_input}`}
-                  style={{ textAlign: "right" }}
+                  value={itemDetails.totalAmount.toFixed(2)}
+                  readOnly
                 />
               </td>
               <td>
@@ -139,6 +249,7 @@ const QuotationFields = ({ openNewCustModal }) => {
                 </div>
               </td>
             </tr>
+            {/* <TableRow /> */}
           </tbody>
         </table>
       </div>

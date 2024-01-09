@@ -32,7 +32,10 @@ const QuotationList = () => {
         const response = await fetch(
           "https://mysaleappreportsapi-7lfpakcp7q-el.a.run.app/api/v1/Quotation?pageNo=1&pageSize=10&desc=false&startDate=2024-01-06&endDate=2024-01-06&sortType=&branchId=63870b069a2ce6762c64444b&companyId=6358dc15fa7df86801678548",
           {
-            headers: { dbName: "mysaledb88410944444" },
+            headers: {
+              dbName: "mysaledb88410944444",
+              "api-key": "devrpt-faea8494bf2b8fa1",
+            },
           }
         );
 
@@ -277,21 +280,17 @@ const QuotationList = () => {
             </select>
           </fieldset>
           <div className={styles.btnMainPagination}>
-            <div
-              className={styles.paginationIcons}
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <FaArrowAltCircleLeft style={{ color: "#3498db" }} />
-            </div>
+            {currentPage !== 1 && (
+              <div className={styles.paginationIcons} onClick={() => handlePageChange(currentPage - 1)}>
+                <FaArrowAltCircleLeft style={{ color: "#3498db" }} />
+              </div>
+            )}
             <span>{`Page ${currentPage} of ${totalPages}`}</span>
-            <div
-              className={styles.paginationIcons}
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <FaArrowAltCircleRight style={{ color: "#3498db" }} />
-            </div>
+            {currentPage !== totalPages && (
+              <div className={styles.paginationIcons} onClick={() => handlePageChange(currentPage + 1)}>
+                <FaArrowAltCircleRight style={{ color: "#3498db" }} />
+              </div>
+            )}
           </div>
         </div>
       </div>
