@@ -2,18 +2,23 @@ import React, { useState } from "react";
 import styles from "./TermsAndSubTotal.module.css";
 
 const TermsAndSubTotal = ({ subtotal, taxPercentage, taxAmount, grandTotal }) => {
-  const [roundOffValue, setRoundOffValue] = useState("");
+  const [roundOffValue, setRoundOffValue] = useState(0);
+  const [roundOffClicked, setRoundOffClicked] = useState(false);
 
   const handleRoundOffChange = (value) => {
-    setRoundOffValue(value);
-    updateGrandTotal(value);
+    setRoundOffValue(parseFloat(value) || 0);
+    setRoundOffClicked(false); // Reset the round-off clicked state
   };
 
-  const updateGrandTotal = (roundOff) => {
-    const roundOffValue = parseFloat(roundOff) || 0;
-    const updatedGrandTotal = grandTotal + roundOffValue;
-    document.getElementById("grandTotal").innerText = `$${updatedGrandTotal.toFixed(2)}`;
+  const handleButtonClick = (value) => {
+    setRoundOffValue(value);
+    setRoundOffClicked(true); // Set round-off clicked state to true
   };
+
+  const calculateGrandTotal = () => {
+    return grandTotal + (roundOffClicked ? roundOffValue : 0);
+  };
+
   return (
     <>
       <div className={styles.endArea_main}>
@@ -71,14 +76,14 @@ const TermsAndSubTotal = ({ subtotal, taxPercentage, taxAmount, grandTotal }) =>
                 <th className={styles.verticalHeading}>
                   Round Off :
                   <span
-                    className={`${styles.roundOff_add} ${roundOffValue > 0 ? styles.active : ""}`}
-                    onClick={() => handleRoundOffChange(Math.abs(roundOffValue))}
+                    className={`${styles.roundOff_add} ${roundOffClicked && roundOffValue > 0 ? styles.active : ""}`}
+                    onClick={() => handleButtonClick(Math.abs(roundOffValue))}
                   >
                     +
                   </span>
                   <span
-                    className={`${styles.roundOff_minus} ${roundOffValue < 0 ? styles.active : ""}`}
-                    onClick={() => handleRoundOffChange(-Math.abs(roundOffValue))}
+                    className={`${styles.roundOff_minus} ${roundOffClicked && roundOffValue < 0 ? styles.active : ""}`}
+                    onClick={() => handleButtonClick(-Math.abs(roundOffValue))}
                   >
                     -
                   </span>
@@ -98,8 +103,8 @@ const TermsAndSubTotal = ({ subtotal, taxPercentage, taxAmount, grandTotal }) =>
 
               <tr>
                 <th className={styles.verticalHeading}>Grand Total</th>
-                <td className={styles.verticalAmount} id="grandTotal" style={{ textAlign: "right" }}>
-                  ${grandTotal.toFixed(2)}
+                <td className={styles.verticalAmount} style={{ textAlign: "right" }}>
+                  ${calculateGrandTotal().toFixed(2)}
                 </td>
               </tr>
             </tbody>
