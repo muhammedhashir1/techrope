@@ -7,12 +7,12 @@ const TermsAndSubTotal = ({ subtotal, taxPercentage, taxAmount, grandTotal }) =>
 
   const handleRoundOffChange = (value) => {
     setRoundOffValue(parseFloat(value) || 0);
-    setRoundOffClicked(false); // Reset the round-off clicked state
+    setRoundOffClicked(false);
   };
 
   const handleButtonClick = (value) => {
     setRoundOffValue(value);
-    setRoundOffClicked(true); // Set round-off clicked state to true
+    setRoundOffClicked(true);
   };
 
   const calculateGrandTotal = () => {
