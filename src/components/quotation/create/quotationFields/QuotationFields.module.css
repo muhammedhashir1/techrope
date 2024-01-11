@@ -165,13 +165,13 @@ label {
 }
 .table td .itemtable_input[readonly],
 .table td .select[readonly] {
-  background-color: #c0caca;
-  color: #fff; /* You can adjust the text color as needed */
+  background-color: #f0f4f4;
+  color: #7b8787;
   /* cursor: not-allowed; */
 }
 
 .table td .itemtable_input[readonly] {
-  border: 1px solid transparent; /* Remove border for readonly input */
+  border: 1px solid #c0caca;
 }
 
 .table th:nth-child(5)[readonly],
@@ -179,6 +179,6 @@ label {
 .table th:nth-child(8)[readonly],
 .table th:nth-child(10)[readonly],
 .table th:nth-child(11)[readonly] {
-  background-color: #c0caca;
-  color: #fff;
+  background-color: #f0f4f4;
+  color: #7b8787;
 }
