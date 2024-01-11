@@ -163,3 +163,22 @@ label {
   justify-content: space-between;
   margin-top: 20px;
 }
+.table td .itemtable_input[readonly],
+.table td .select[readonly] {
+  background-color: #c0caca;
+  color: #fff; /* You can adjust the text color as needed */
+  /* cursor: not-allowed; */
+}
+
+.table td .itemtable_input[readonly] {
+  border: 1px solid transparent; /* Remove border for readonly input */
+}
+
+.table th:nth-child(5)[readonly],
+.table th:nth-child(6)[readonly],
+.table th:nth-child(8)[readonly],
+.table th:nth-child(10)[readonly],
+.table th:nth-child(11)[readonly] {
+  background-color: #c0caca;
+  color: #fff;
+}
