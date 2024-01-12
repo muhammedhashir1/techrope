@@ -7,7 +7,7 @@ import { MdOutlineSpeakerNotes } from "react-icons/md";
 import TermsAndSubTotal from "../termsAndSubtotal/TermsAndSubTotal";
 import styles from "./QuotationFields.module.css";
 
-const QuotationFields = ({ openNewCustModal }) => {
+const QuotationFields = ({ openNewCustModal, openNewItemModal }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -51,11 +51,10 @@ const QuotationFields = ({ openNewCustModal }) => {
     taxAmount: 0,
     totalAmount: 0,
   });
+
   const handleItemChange = (itemId) => {
-    // Find the selected item details
     const selected = items.find((item) => item.id === itemId);
 
-    // Update state with the selected item details
     setSelectedItem({
       unit: selected.unitShortName,
       rate: selected.purchaseRate,
@@ -99,6 +98,7 @@ const QuotationFields = ({ openNewCustModal }) => {
     setTaxAmount(itemDetails.taxAmount);
     setGrandTotal(itemDetails.totalAmount);
   }, [itemDetails, selectedItem]);
+
   return (
     <div className={styles.quotationField_Main}>
       <div className={styles.customerName_main_section}>
@@ -131,7 +131,7 @@ const QuotationFields = ({ openNewCustModal }) => {
         </div>
       </div>
       <div className={styles.newItem}>
-        <IoMdAddCircleOutline /> <span>New Item</span>
+        <IoMdAddCircleOutline /> <span onClick={openNewItemModal}>New Item</span>
       </div>
       <div className={styles.itemtable}>
         <table className={styles.table}>
